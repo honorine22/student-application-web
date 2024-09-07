@@ -6,7 +6,7 @@ const Navbar: React.FC<{ isAdmin: boolean }> = ({ isAdmin }) => {
     return (
         <nav className="bg-blue-600 p-4">
             <div className="container mx-auto flex justify-between items-center">
-                <Link href="/" className="text-white text-xl font-bold">MyApp</Link>
+                <Link href="/" className="text-white text-xl font-bold">ETP Admissions</Link>
                 <div className="flex space-x-4">
                     {isAdmin ? (
                         <>
