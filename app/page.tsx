@@ -6,7 +6,7 @@ import Footer from "./components/Footer";
 export default function Home() {
   return (
     <>
-      <Navbar isAdmin={true} />
+      <Navbar />
       <div className="min-h-screen bg-gray-50">
         {/* Hero Section */}
         <header className="bg-blue-600 text-white">
@@ -15,7 +15,8 @@ export default function Home() {
               <div>
                 <h1 className="text-4xl font-bold">Welcome to Our Training School</h1>
                 <p className="mt-4 text-lg">
-                  Your journey to mastering a trade begins here. Join us to learn valuable skills and open doors to new opportunities.
+                  TVET / ETP - Karama , abanyeshuri 173 bashoje amasomo yabo neza mu mashami ya Automobile repair , Electronic services , Tairoling , and Masonry .
+                  Iri shuri ririmo kwandika abandi banyeshuri bashyashya , bitegura no gutangiza ishami rishya rya Musika  k` Ubufatanye na Nyundo.
                 </p>
                 <div className="mt-8">
                   <Link href="/register">
@@ -27,8 +28,8 @@ export default function Home() {
               </div>
               <div className="mt-8 lg:mt-0 lg:ml-8">
                 <img
-                  className="w-full h-64 object-cover rounded-lg shadow-lg"
-                  src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8c3R1ZGVudCUyMGFwcGxpY2F0aW9uc3xlbnwwfHwwfHx8MA%3D%3D"
+                  className="rounded-lg shadow-lg"
+                  src="./images/call.png"
                   alt="Learning trades"
                 />
               </div>
