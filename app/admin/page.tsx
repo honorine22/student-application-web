@@ -4,6 +4,8 @@ import { client } from '../../sanity/lib/client'; // Make sure you have sanityCl
 import { toast } from 'react-toastify';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '../firebaseConfig';
 
 interface StudentAdmission {
     _id: string;
@@ -20,16 +22,44 @@ interface StudentAdmission {
 }
 
 const Admin: React.FC = () => {
+    const [userEmail, setUserEmail] = useState<string | null>(null);
     const [students, setStudents] = useState<StudentAdmission[]>([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                setUserEmail(user.email || null);
+            } else {
+                setUserEmail(null);
+            }
+            setLoading(false);
+        });
+
+
         const fetchStudents = async () => {
             const data = await client.fetch('*[_type == "studentAdmission"]');
             setStudents(data);
         };
 
         fetchStudents();
+        return () => unsubscribe();
     }, []);
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    if (!userEmail) {
+        return <div>Not signed in</div>;
+    }
+
+    // List of authorized emails
+    //  const AUTHORIZED_EMAILS = ["authorized_user@example.com"];
+
+    //  if (!AUTHORIZED_EMAILS.includes(userEmail)) {
+    //    return <div>Unauthorized</div>;
+    //  }
 
     const handleStatusChange = async (studentId: string, newStatus: 'approved' | 'rejected') => {
         const confirmation = window.confirm(`Are you sure you want to change the status to ${newStatus}?`);
