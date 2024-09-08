@@ -5,7 +5,6 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "proxy": "https://530afs2a.api.sanity.io",
     "start": "next start",
     "lint": "next lint"
   },

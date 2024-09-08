@@ -45,9 +45,17 @@ const Register: React.FC = () => {
                 ...data,
                 status: 'pending',
             });
-            toast.success('Registration successful!');
+            toast.success(`Registration successful!`, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
             reset(); // Reset form after successful submission
-            window.location.href = '/';
+            window.location.href = '/'; // Redirect to home page
         } catch (error) {
             console.error('Registration failed:', error);
             toast.error('Registration failed. Please try again.');

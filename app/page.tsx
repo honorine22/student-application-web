@@ -6,7 +6,7 @@ import Footer from "./components/Footer";
 export default function Home() {
   return (
     <>
-      <Navbar isAdmin={false} />
+      <Navbar isAdmin={true} />
       <div className="min-h-screen bg-gray-50">
         {/* Hero Section */}
         <header className="bg-blue-600 text-white">

@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react';
 import { client } from '../../sanity/lib/client'; // Make sure you have sanityClient configured
+import { toast } from 'react-toastify';
 
 interface StudentAdmission {
     _id: string;
@@ -29,13 +30,34 @@ const Admin: React.FC = () => {
     }, []);
 
     const handleStatusChange = async (studentId: string, newStatus: 'approved' | 'rejected') => {
+        const confirmation = window.confirm(`Are you sure you want to change the status to ${newStatus}?`);
+        if (!confirmation) return;
+
         try {
             await client.patch(studentId).set({ status: newStatus }).commit();
-            alert(`Student ${newStatus} successfully!`);
+
+            toast.success(`Student ${newStatus} successfully!`, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+
             setStudents(students.map(student => student._id === studentId ? { ...student, status: newStatus } : student));
         } catch (error) {
             console.error(`${newStatus} failed:`, error);
-            alert(`${newStatus} failed. Please try again.`);
+            toast.error(`Failed to ${newStatus} the student. Please try again.`, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
         }
     };
 
@@ -64,10 +86,10 @@ const Admin: React.FC = () => {
                                 <td className="py-4 px-6 text-gray-700">
                                     <span
                                         className={`px-3 py-1 rounded-full text-sm font-medium ${student.status === 'approved'
-                                                ? 'bg-green-100 text-green-700'
-                                                : student.status === 'rejected'
-                                                    ? 'bg-red-100 text-red-700'
-                                                    : 'bg-yellow-100 text-yellow-700'
+                                            ? 'bg-green-100 text-green-700'
+                                            : student.status === 'rejected'
+                                                ? 'bg-red-100 text-red-700'
+                                                : 'bg-yellow-100 text-yellow-700'
                                             }`}
                                     >
                                         {student.status}

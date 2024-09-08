@@ -10,12 +10,12 @@ const Navbar: React.FC<{ isAdmin: boolean }> = ({ isAdmin }) => {
                 <div className="flex space-x-4">
                     {isAdmin ? (
                         <>
-                            <Link href="/students" className="text-white hover:text-gray-200">Students</Link>
-                            <Link href="/approvals" className="text-white hover:text-gray-200">Approvals</Link>
+                            <Link href="/admin" className="text-white hover:text-gray-200">Manage Students</Link>
+                           
                         </>
                     ) : (
                         <>
-                            <Link href="/program" className="text-white hover:text-gray-200">Program Info</Link>
+                            <Link href="/" className="text-white hover:text-gray-200">Program Info</Link>
                             <Link href="/register" className="text-white hover:text-gray-200">Register</Link>
                         </>
                     )}
