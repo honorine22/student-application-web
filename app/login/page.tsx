@@ -4,8 +4,12 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebaseConfig';
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
+// import ResetPasswordModal from '../components/ResetPasswordModal';
 
 const SignIn = () => {
+    // const [isModalOpen, setIsModalOpen] = useState(false);
+    // const openModal = () => setIsModalOpen(true);
+    // const closeModal = () => setIsModalOpen(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState<string | null>(null);
@@ -62,7 +66,18 @@ const SignIn = () => {
                         >
                             {loading ? 'Signing In...' : 'Sign In'}
                         </button>
+
                     </form>
+                    {/* <button
+                        onClick={openModal}
+                        className="mt-4 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-200"
+                    >
+                        Forgot Password?
+                    </button>
+                    <ResetPasswordModal
+                        isOpen={isModalOpen}
+                        onRequestClose={closeModal}
+                    /> */}
                 </div>
             </div>
             <Footer />
