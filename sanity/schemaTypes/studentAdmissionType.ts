@@ -14,6 +14,15 @@ export const studentAdmissionType = defineType({
     defineField({ name: 'sector', title: 'Sector', type: 'string', validation: Rule => Rule.required() }),
     defineField({ name: 'village', title: 'Village', type: 'string', validation: Rule => Rule.required() }),
     defineField({
+      name: 'email',
+      title: 'Email',
+      type: 'string',
+      validation: Rule => 
+        Rule.required()
+          .email()
+          .max(255) // Adjust the maximum length if needed
+    }),
+    defineField({
       name: 'education',
       title: 'Education',
       type: 'string',

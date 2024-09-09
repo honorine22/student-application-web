@@ -19,6 +19,7 @@ interface RegisterFormInputs {
     village: string;
     tradeToLearn: string;
     education: string
+    email: string;
 }
 
 // Validation schema
@@ -32,6 +33,7 @@ const validationSchema = Yup.object().shape({
     sector: Yup.string().required('Sector is required'),
     village: Yup.string().required('Village is required'),
     tradeToLearn: Yup.string().required('Trade to learn is required'),
+    email: Yup.string().required('Email is required'),
     education: Yup.string().required('Education Level is required'),
 });
 
@@ -162,6 +164,16 @@ const Register: React.FC = () => {
                                 />
                                 {errors.village && <p className="text-red-500 text-sm mt-1">{errors.village.message}</p>}
                             </div>
+                        </div>
+                        <div>
+                            <label className="block text-gray-700">Email</label>
+                            <input
+                                type="email"
+                                {...register('email')}
+                                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${errors.village ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-blue-500'
+                                    }`}
+                            />
+                            {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
                         </div>
                         <div>
                             <label className="block text-gray-700">Level of Education</label>
