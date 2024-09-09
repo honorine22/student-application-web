@@ -11,7 +11,7 @@ const Navbar: React.FC = () => {
                     <>
                         <Link href="/" className="text-white hover:text-gray-200">Program Info</Link>
                         <Link href="/register" className="text-white hover:text-gray-200">Register</Link>
-                        <Link href="/admin" className="text-white hover:text-gray-200">Manage Students</Link>
+                        <Link href="/login" className="text-white hover:text-gray-200">Manage Students</Link>
                     </>
                 </div>
             </div>

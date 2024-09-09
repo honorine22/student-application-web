@@ -54,13 +54,6 @@ const Admin: React.FC = () => {
         return <div>Not signed in</div>;
     }
 
-    // List of authorized emails
-    //  const AUTHORIZED_EMAILS = ["authorized_user@example.com"];
-
-    //  if (!AUTHORIZED_EMAILS.includes(userEmail)) {
-    //    return <div>Unauthorized</div>;
-    //  }
-
     const handleStatusChange = async (studentId: string, newStatus: 'approved' | 'rejected') => {
         const confirmation = window.confirm(`Are you sure you want to change the status to ${newStatus}?`);
         if (!confirmation) return;
