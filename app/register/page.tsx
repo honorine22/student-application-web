@@ -33,7 +33,7 @@ const validationSchema = Yup.object().shape({
     sector: Yup.string().required('Sector is required'),
     village: Yup.string().required('Village is required'),
     tradeToLearn: Yup.string().required('Trade to learn is required'),
-    email: Yup.string().required('Email is required'),
+    email: Yup.string().email('Please enter a valid email address').required('Email is required'),
     education: Yup.string().required('Education Level is required'),
 });
 
