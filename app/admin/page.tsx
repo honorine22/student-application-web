@@ -6,6 +6,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebaseConfig';
+import { sendMail } from '../utils/lib/sendAdmissionEmail';
 
 interface StudentAdmission {
     _id: string;
@@ -16,6 +17,7 @@ interface StudentAdmission {
     country: string;
     district: string;
     sector: string;
+    email: string;
     village: string;
     tradeToLearn: string;
     status: 'pending' | 'approved' | 'rejected';
@@ -54,24 +56,101 @@ const Admin: React.FC = () => {
         return <div>Not signed in</div>;
     }
 
-    const handleStatusChange = async (studentId: string, newStatus: 'approved' | 'rejected') => {
+
+    const handleDeleteStudent = async (studentId: string, studentName: string, studentEmail: string) => {
+        const confirmation = window.confirm(`Are you sure you want to delete the student ${studentName} (${studentEmail})?`);
+        if (!confirmation) return;
+
+        try {
+            // Deleting the student document by ID
+            await client.delete(studentId);
+            setStudents(students.filter(student => student._id !== studentId));
+            // Optionally, you can add a notification or reload the page after deletion
+            toast.success(`Student ${studentName} has been successfully deleted.`);
+            // location.reload(); // Uncomment if you want to reload the page
+        } catch (error) {
+            console.error("Failed to delete the student:", error);
+            toast.error("An error occurred while deleting the student. Please try again.");
+        }
+    };
+
+
+    const handleStatusChange = async (studentId: string, newStatus: 'approved' | 'rejected', studentName: string, studentEmail: string) => {
         const confirmation = window.confirm(`Are you sure you want to change the status to ${newStatus}?`);
         if (!confirmation) return;
 
         try {
             await client.patch(studentId).set({ status: newStatus }).commit();
+            // Determine the subject and body based on the student's status
+            let subject = '';
+            let body = '';
 
-            toast.success(`Student ${newStatus} successfully!`, {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
+            if (newStatus === 'approved') {
+                subject = `Congratulations🥳! You’ve Been Admitted to ETP`;
+                body = `Dear ${studentName},
+
+            Congratulations! We are pleased to inform you that you have been admitted to ETP College for the 2024/2025.
+
+            Your hard work and dedication have truly paid off, and we are excited to welcome you to our academic community. 
+            As an admitted student, you will soon receive more information about the next steps, 
+            including how to confirm your enrollment, register for classes, and get involved in campus activities.
+
+            If you have any questions or need further assistance, please do not hesitate to contact our admissions office at [Admissions Office Email] or [Phone Number]. 
+            We are here to help you every step of the way.
+
+            Once again, congratulations on your admission, and we look forward to seeing you on campus!
+
+            Warm regards,
+            Joseph Karuranga
+            Manager Director, ETP
+            +250788504249`;
+            } else {
+                subject = `Admission Decision for ETP`;
+                body = `Dear ${studentName},
+
+            Thank you for your interest in ETP College. 
+            After careful consideration of your application, we regret to inform you that we are unable to offer you admission to our program for the 2024/2025.
+
+            We understand that this news may be disappointing, and we want to emphasize that this decision does not reflect your abilities or potential. 
+            The admissions process is highly competitive, and we had to make some very difficult decisions this year.
+
+            We encourage you to continue pursuing your academic and career goals, and we wish you the very best in your future endeavors. 
+            If you have any questions or would like feedback on your application, please feel free to contact our admissions office at [Admissions Office Email].
+
+            Thank you again for considering ETP College. We wish you success in all your future pursuits.
+
+            Sincerely,
+            Joseph Karuranga
+            Manager Director, ETP
+            +250788504249`;
+            }
+
+            // Combine email text
+            const mailText = `${body}`;
+
+            // Send email
+            const response = await sendMail({
+                sendTo: studentEmail,
+                subject: subject,
+                text: mailText,
             });
 
-            setStudents(students.map(student => student._id === studentId ? { ...student, status: newStatus } : student));
+            if (response?.messageId) {
+                toast.success(`Student ${newStatus} and email sent successfully!`, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+
+                setStudents(students.map(student => student._id === studentId ? { ...student, status: newStatus } : student));
+            } else {
+                toast.error('Failed to send email.');
+            }
+
         } catch (error) {
             console.error(`${newStatus} failed:`, error);
             toast.error(`Failed to ${newStatus} the student. Please try again.`, {
@@ -123,22 +202,37 @@ const Admin: React.FC = () => {
                                         </span>
                                     </td>
                                     <td className="py-4 px-6 text-gray-700">
-                                        {student.status === 'pending' && (
-                                            <div className="flex space-x-2">
-                                                <button
-                                                    onClick={() => handleStatusChange(student._id, 'approved')}
+
+                                        <div className="flex space-x-2">
+                                            {student.status === 'pending' && (
+                                                <><button
+                                                    onClick={() => {
+                                                        handleStatusChange(student._id, 'approved', student.firstName, student.email);
+
+                                                    }}
                                                     className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
                                                 >
                                                     Approve
-                                                </button>
-                                                <button
-                                                    onClick={() => handleStatusChange(student._id, 'rejected')}
+                                                </button><button
+                                                    onClick={() => {
+                                                        handleStatusChange(student._id, 'rejected', student.firstName, student.email);
+
+                                                    }}
                                                     className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
                                                 >
-                                                    Reject
-                                                </button>
-                                            </div>
-                                        )}
+                                                        Reject
+                                                    </button></>
+                                            )}
+                                            <button
+                                                onClick={() => {
+                                                    handleDeleteStudent(student._id, student.firstName, student.email)
+
+                                                }}
+                                                className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
+                                            >
+                                                Delete
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             ))}
