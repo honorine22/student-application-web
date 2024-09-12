@@ -1,0 +1,19 @@
+{
+  "_createdAt": "2024-09-08T17:34:00Z",
+  "_id": "KzS6kYoWzDJY07Cgj9VRkD",
+  "_rev": "kAPvJ3dZEGFAuAvgIbU5jc",
+  "_type": "studentAdmission",
+  "_updatedAt": "2024-09-09T15:10:11Z",
+  "country": "United States",
+  "district": "Huye",
+  "education": "master",
+  "firstName": "Jon",
+  "lastName": "Doe",
+  "nationalIDNumber": "985185710587105781",
+  "sector": "Huye",
+  "status": "approved",
+  "email":"igiranezah8@gmail.com",
+  "telephoneNumber": "6019521325",
+  "tradeToLearn": "Church Music",
+  "village": "Gako"
+}
