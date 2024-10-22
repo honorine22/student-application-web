@@ -175,6 +175,8 @@ const Admin: React.FC = () => {
                         <thead>
                             <tr>
                                 <th className="py-3 px-6 bg-blue-600 text-white text-left">Name</th>
+                                <th className="py-3 px-6 bg-blue-600 text-white text-left">Tel No</th>
+                                <th className="py-3 px-6 bg-blue-600 text-white text-left">Email</th>
                                 <th className="py-3 px-6 bg-blue-600 text-white text-left">Trade</th>
                                 <th className="py-3 px-6 bg-blue-600 text-white text-left">Country</th>
                                 <th className="py-3 px-6 bg-blue-600 text-white text-left">Status</th>
@@ -188,6 +190,8 @@ const Admin: React.FC = () => {
                                         {student.firstName} {student.lastName}
                                     </td>
                                     <td className="py-4 px-6 text-gray-700">{student.tradeToLearn}</td>
+                                    <td className="py-4 px-6 text-gray-700">{student.telephoneNumber}</td>
+                                    <td className="py-4 px-6 text-gray-700">{student.email}</td>
                                     <td className="py-4 px-6 text-gray-700">{student.country}</td>
                                     <td className="py-4 px-6 text-gray-700">
                                         <span
