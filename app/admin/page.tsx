@@ -175,9 +175,9 @@ const Admin: React.FC = () => {
                         <thead>
                             <tr>
                                 <th className="py-3 px-6 bg-blue-600 text-white text-left">Name</th>
+                                <th className="py-3 px-6 bg-blue-600 text-white text-left">Trade</th>
                                 <th className="py-3 px-6 bg-blue-600 text-white text-left">Tel No</th>
                                 <th className="py-3 px-6 bg-blue-600 text-white text-left">Email</th>
-                                <th className="py-3 px-6 bg-blue-600 text-white text-left">Trade</th>
                                 <th className="py-3 px-6 bg-blue-600 text-white text-left">Country</th>
                                 <th className="py-3 px-6 bg-blue-600 text-white text-left">Status</th>
                                 <th className="py-3 px-6 bg-blue-600 text-white text-left">Actions</th>
