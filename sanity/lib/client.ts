@@ -8,6 +8,6 @@ export const client = createClient({
   projectId,
   dataset,
   token: sanity_token,
-  useCdn: isProduction, // Set to false if statically generating pages, using ISR or tag-based revalidation
+  useCdn: false,
   apiVersion
 })

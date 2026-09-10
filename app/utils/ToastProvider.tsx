@@ -1,8 +1,7 @@
 "use client";
 
-import "react-toastify/dist/ReactToastify.css";
 import "../../app/globals.css";
-import { ToastContainer } from "react-toastify";
+import { Toaster } from "sonner";
 
 interface ToastProviderProps {
   children: React.ReactNode;
@@ -12,11 +11,7 @@ export default function ToastProvider({ children }: ToastProviderProps) {
   return (
     <>
       {children}
-      <ToastContainer
-        bodyClassName={() => "text-sm font-white font-med block p-3"}
-        position="top-center"
-        autoClose={3000}
-      />
+      <Toaster richColors position="top-right" closeButton />
     </>
   );
 }

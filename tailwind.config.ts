@@ -11,6 +11,15 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        etp: {
+          ink: "#14211d",
+          accent: "#d9f65a",
+          surface: "#f1f3f4",
+          muted: "#68736d",
+        },
+      },
+      boxShadow: {
+        "etp-card": "0 22px 70px rgba(20, 33, 29, 0.11)",
       },
     },
   },
