@@ -1,73 +1,206 @@
-import { defineField, defineType } from 'sanity';
+import { defineField, defineType } from "sanity";
 
+const programs = [
+  "Tailoring",
+  "Electronic Services",
+  "Masonry",
+  "Automobile Repair and Maintenance",
+  "Church Music Arts",
+  "Videography",
+  "Mobile Phone Repair",
+  "Domestic Electricity",
+  "Provisional permit",
+  "Licence Cat B",
+  "Licence Cat A",
+];
 export const studentAdmissionType = defineType({
-  name: 'studentAdmission',
-  title: 'Student Admission',
-  type: 'document',
+  name: "studentAdmission",
+  title: "Student Admission",
+  type: "document",
   fields: [
-    defineField({ name: 'firstName', title: 'First Name', type: 'string', validation: Rule => Rule.required() }),
-    defineField({ name: 'lastName', title: 'Last Name', type: 'string', validation: Rule => Rule.required() }),
-    defineField({ name: 'telephoneNumber', title: 'Telephone Number', type: 'string', validation: Rule => Rule.required() }),
-    defineField({ name: 'nationalIDNumber', title: 'National ID Number', type: 'string', validation: Rule => Rule.required() }),
-    defineField({ name: 'country', title: 'Country', type: 'string', validation: Rule => Rule.required() }),
-    defineField({ name: 'district', title: 'District', type: 'string', validation: Rule => Rule.required() }),
-    defineField({ name: 'sector', title: 'Sector', type: 'string', validation: Rule => Rule.required() }),
-    defineField({ name: 'village', title: 'Village', type: 'string', validation: Rule => Rule.required() }),
     defineField({
-      name: 'email',
-      title: 'Email',
-      type: 'string',
-      validation: Rule => 
-        Rule.required()
-          .email()
-          .max(255) // Adjust the maximum length if needed
+      name: "fullName",
+      title: "Full Name",
+      type: "string",
+      readOnly: true,
     }),
     defineField({
-      name: 'education',
-      title: 'Education',
-      type: 'string',
-          options: {
-            list: [
-              { title: 'Primary', value: 'primary' },
-              { title: 'Ordinary Level', value: 'ordinary' },
-              { title: 'Advanced Level', value: 'advanced' },
-              { title: 'Associate Degree', value: 'associate' },
-              { title: 'Bachelor\'s Degree', value: 'bachelor' },
-              { title: 'Master\'s Degree', value: 'master' },
-              { title: 'Doctorate', value: 'doctorate' }
-  ]}
+      name: "firstName",
+      title: "First Name",
+      type: "string",
+      validation: (R) => R.required().min(2),
     }),
     defineField({
-      name: 'tradeToLearn',
-      title: 'Trade to Learn',
-      type: 'string',
+      name: "lastName",
+      title: "Last Name",
+      type: "string",
+      validation: (R) => R.required().min(2),
+    }),
+    defineField({
+      name: "nationalIDNumber",
+      title: "National ID",
+      type: "string",
+      validation: (R) =>
+        R.required().regex(/^\d{16}$/, { name: "16-digit National ID" }),
+    }),
+    defineField({
+      name: "email",
+      title: "Email",
+      type: "string",
+      validation: (R) => R.required().email(),
+    }),
+    defineField({
+      name: "telephoneNumber",
+      title: "Applicant Phone",
+      type: "string",
+      validation: (R) =>
+        R.required().regex(/^(?:\+250|0)7\d{8}$/, {
+          name: "Rwanda phone number",
+        }),
+    }),
+    defineField({
+      name: "education",
+      title: "Highest Education Level",
+      type: "string",
+    }),
+    defineField({
+      name: "country",
+      title: "Country (legacy)",
+      type: "string",
+      hidden: true,
+    }),
+    defineField({
+      name: "province",
+      title: "Province / Intara",
+      type: "string",
+    }),
+    defineField({
+      name: "district",
+      title: "District / Akarere",
+      type: "string",
+    }),
+    defineField({ name: "sector", title: "Sector / Umurenge", type: "string" }),
+    defineField({ name: "cell", title: "Cell / Akagari", type: "string" }),
+    defineField({
+      name: "village",
+      title: "Village / Umudugudu",
+      type: "string",
+    }),
+    defineField({
+      name: "tradeToLearn",
+      title: "Program / Trade to Learn",
+      type: "string",
+      options: { list: programs.map((x) => ({ title: x, value: x })) },
+      validation: (R) => R.required(),
+    }),
+    defineField({
+      name: "trainingLocation",
+      title: "Preferred Study Location",
+      type: "string",
+      description: "Church Music Arts is available only at Karama.",
+      validation: (R) => R.required(),
+    }),
+    defineField({
+      name: "emergencyContactName",
+      title: "Emergency Contact Name",
+      type: "string",
+    }),
+    defineField({
+      name: "emergencyContactRelationship",
+      title: "Relationship",
+      type: "string",
+      options: {
+        list: ["Parent", "Guardian", "Brother/Sister", "Relative", "Other"],
+      },
+    }),
+    defineField({
+      name: "emergencyContactPhone",
+      title: "Emergency Contact Phone",
+      type: "string",
+    }),
+    defineField({
+      name: "registrationFee",
+      title: "Registration Fee (RWF)",
+      type: "number",
+      initialValue: 5000,
+      validation: (R) => R.min(0),
+    }),
+    defineField({
+      name: "paymentMethod",
+      title: "Payment Method",
+      type: "string",
+    }),
+    defineField({
+      name: "paymentReference",
+      title: "Transaction / Reference",
+      type: "string",
+    }),
+    defineField({
+      name: "paymentProof",
+      title: "Proof of Payment",
+      type: "file",
+      description:
+        "Applicant payment evidence. Keep access limited to authorized staff.",
+      options: { accept: "image/jpeg,image/png,application/pdf" },
+    }),
+    defineField({
+      name: "paymentStatus",
+      title: "Payment Status",
+      type: "string",
+      initialValue: "pending",
       options: {
         list: [
-          { title: 'Tailoring/Ubudozi', value: 'Tailoring' },
-          { title: 'Electronic Services', value: 'Electronic Services' },
-          { title: 'Masonry/Ubwubatsi', value: 'Masonry' },
-          { title: 'Automobile Repair and Maintenance/Ubukanishi', value: 'Automobile Repair and Maintenance' },
-          { title: 'Church Music/Umuziki ukoreshwa mu nsengero/Kiliziya', value: 'Church Music' },
-          { title: 'Provisional permit/Kwiga amategeko y\'umuhanda', value: 'Provisional permit' },
-          { title: 'Licence Cat B/Gutwara imodoka', value: 'Licence Cat B' },
-          { title: 'Licence Cat A', value: 'Licence Cat A' },
+          { title: "Pending Verification", value: "pending" },
+          { title: "Payment Confirmed", value: "confirmed" },
+          { title: "Needs Review", value: "needsReview" },
+          { title: "Payment Rejected", value: "rejected" },
         ],
       },
-      validation: Rule => Rule.required(),
     }),
     defineField({
-      name: 'status',
-      title: 'Status',
-      type: 'string',
+      name: "applicationStatus",
+      title: "Application Status",
+      type: "string",
+      initialValue: "submitted",
       options: {
         list: [
-          { title: 'Pending', value: 'pending' },
-          { title: 'Approved', value: 'approved' },
-          { title: 'Rejected', value: 'rejected' },
+          { title: "Submitted", value: "submitted" },
+          { title: "Under Review", value: "underReview" },
+          { title: "Approved", value: "approved" },
+          { title: "Rejected", value: "rejected" },
         ],
       },
-      initialValue: 'pending', // Default status
-      validation: Rule => Rule.required(),
+    }),
+    defineField({
+      name: "status",
+      title: "Legacy Admission Status",
+      type: "string",
+      hidden: true,
+    }),
+    defineField({
+      name: "createdAt",
+      title: "Submitted At",
+      type: "datetime",
+      readOnly: true,
+    }),
+    defineField({
+      name: "updatedAt",
+      title: "Updated At",
+      type: "datetime",
+      readOnly: true,
     }),
   ],
+  preview: {
+    select: {
+      firstName: "firstName",
+      lastName: "lastName",
+      program: "tradeToLearn",
+      status: "paymentStatus",
+    },
+    prepare: ({ firstName, lastName, program, status }) => ({
+      title:
+        `${firstName || ""} ${lastName || ""}`.trim() || "Unnamed applicant",
+      subtitle: `${program || "No program"} · ${status || "pending"}`,
+    }),
+  },
 });

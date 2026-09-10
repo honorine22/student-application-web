@@ -1,111 +1,281 @@
-/* eslint-disable @next/next/no-img-element */
+import Image from "next/image";
 import Link from "next/link";
+import {
+  ArrowRight,
+  Award,
+  BookOpen,
+  Check,
+  CircuitBoard,
+  Hammer,
+  MapPin,
+  Music2,
+  Scissors,
+  ShieldCheck,
+  Users,
+  Video,
+  Smartphone,
+  Wrench,
+  Zap,
+} from "lucide-react";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import {
+  formatRwf,
+  PROGRAMS,
+  REGISTRATION_FEE,
+  TRAINING_LOCATIONS,
+} from "./lib/admissions";
+
+const icons = {
+  needle: Scissors,
+  circuit: CircuitBoard,
+  brick: Hammer,
+  car: Wrench,
+  music: Music2,
+  video: Video,
+  phone: Smartphone,
+  electricity: Zap,
+  road: BookOpen,
+  bike: Wrench,
+} as const;
 
 export default function Home() {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-gray-50">
-        {/* Hero Section */}
-        <header className="bg-blue-600 text-white">
-          <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
-            <div className="lg:flex lg:justify-between lg:items-center">
-              <div>
-                <h1 className="text-4xl font-bold">Welcome to Our Training School</h1>
-                <p className="mt-4 text-lg">
-                  TVET / ETP - Karama , abanyeshuri 173 bashoje amasomo yabo neza mu mashami ya Automobile repair , Electronic services , Tairoling , and Masonry .
-                  Iri shuri ririmo kwandika abandi banyeshuri bashyashya , bitegura no gutangiza ishami rishya rya Musika  k` Ubufatanye na Nyundo.
-                </p>
-                <div className="mt-8">
-                  <Link href="/register">
-                    <Link href={"/register"} className="inline-block bg-white text-blue-600 font-semibold py-3 px-6 rounded-lg shadow-lg hover:bg-gray-200">
-                      Apply Now
-                    </Link>
-                  </Link>
-                </div>
+      <main>
+        <section className="hero relative isolate min-h-[calc(100svh-72px)] overflow-hidden bg-etp-ink">
+          <Image
+            src="/images/etp-students-natural-hero.jpg"
+            alt="ETP students learning practical and creative skills together"
+            fill
+            priority
+            sizes="100vw"
+            className="hero-image"
+          />
+          <div className="hero-overlay" />
+          <div className="page-shell hero-content relative z-10 mx-auto flex min-h-[calc(100svh-72px)] w-full max-w-[1180px] items-center justify-between gap-10 px-5 sm:px-6">
+            <div className="hero-copy max-w-[660px] text-white">
+              <h1>
+                Build a skill.
+                <br />
+                <em>Shape your future.</em>
+              </h1>
+              <p>
+                Practical training for ambitious learners ready to create,
+                repair, build, and lead.
+              </p>
+              <div className="hero-actions">
+                <Link href="/register" className="button button-lime">
+                  Start your application <ArrowRight size={18} />
+                </Link>
+                <a href="#programs" className="text-link light-link">
+                  Explore programs <span>↓</span>
+                </a>
               </div>
-              <div className="mt-8 lg:mt-0 lg:ml-8">
-                <img
-                  className="rounded-lg shadow-lg"
-                  src="./images/call.png"
-                  alt="Learning trades"
-                />
+              <div className="hero-trust">
+                <span>
+                  <Check /> Simple online application
+                </span>
+                <span>
+                  <Check /> Manual payment review
+                </span>
               </div>
             </div>
+            <aside className="fee-card">
+              <span>Registration fee</span>
+              <strong>{formatRwf(REGISTRATION_FEE)}</strong>
+              <p>
+                Submit your application and payment proof online. Every payment
+                is reviewed by the ETP team.
+              </p>
+              <Link href="/register">
+                See application steps <ArrowRight size={16} />
+              </Link>
+            </aside>
           </div>
-        </header>
-
-        {/* Features Section */}
-        <section className="bg-white py-16">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center">
-              <h2 className="text-3xl font-extrabold text-gray-900">Why Choose Our School?</h2>
-              <p className="mt-4 text-lg text-gray-600">
-                We offer a variety of trade programs to help you develop the skills needed to succeed in your chosen field.
+        </section>
+        <section className="intro-strip">
+          <div className="page-shell intro-grid">
+            <span className="eyebrow">A place to begin</span>
+            <h2>
+              Learning that moves
+              <br />
+              with the real world.
+            </h2>
+            <p>
+              ETP brings practical instruction and creative exploration together
+              in a supportive learning environment.
+            </p>
+          </div>
+        </section>
+        <section className="program-section" id="programs">
+          <div className="page-shell">
+            <div className="section-head">
+              <div>
+                <span className="eyebrow">Find your direction</span>
+                <h2>
+                  Programs built around
+                  <br />
+                  <em>what you can do.</em>
+                </h2>
+              </div>
+              <p>
+                Choose the practical or creative path that fits your goals.
+                You’ll select your preferred program during the application.
               </p>
             </div>
-
-            <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-              <div className="text-center">
-                <div className="flex items-center justify-center h-12 w-12 mx-auto bg-blue-600 text-white rounded-full">
-                  <i className="fas fa-chalkboard-teacher"></i>
-                </div>
-                <h3 className="mt-6 text-lg font-medium text-gray-900">Expert Instructors</h3>
-                <p className="mt-2 text-gray-600">
-                  Learn from industry professionals with years of experience.
-                </p>
-              </div>
-
-              <div className="text-center">
-                <div className="flex items-center justify-center h-12 w-12 mx-auto bg-blue-600 text-white rounded-full">
-                  <i className="fas fa-tools"></i>
-                </div>
-                <h3 className="mt-6 text-lg font-medium text-gray-900">Hands-on Training</h3>
-                <p className="mt-2 text-gray-600">
-                  Gain practical skills with our hands-on approach to learning.
-                </p>
-              </div>
-
-              <div className="text-center">
-                <div className="flex items-center justify-center h-12 w-12 mx-auto bg-blue-600 text-white rounded-full">
-                  <i className="fas fa-briefcase"></i>
-                </div>
-                <h3 className="mt-6 text-lg font-medium text-gray-900">Job Placement</h3>
-                <p className="mt-2 text-gray-600">
-                  We help you secure a job after you complete your training.
-                </p>
-              </div>
-
-              <div className="text-center">
-                <div className="flex items-center justify-center h-12 w-12 mx-auto bg-blue-600 text-white rounded-full">
-                  <i className="fas fa-graduation-cap"></i>
-                </div>
-                <h3 className="mt-6 text-lg font-medium text-gray-900">Certifications</h3>
-                <p className="mt-2 text-gray-600">
-                  Earn recognized certifications that will boost your career.
-                </p>
-              </div>
+            <div className="program-grid">
+              {PROGRAMS.map((program, index) => {
+                const Icon = icons[program.icon];
+                return (
+                  <article
+                    className={`program-card card-tone-${index % 4}`}
+                    key={program.value}
+                  >
+                    <div className="program-number">0{index + 1}</div>
+                    <Icon size={30} />
+                    <h3>{program.label}</h3>
+                    <Link
+                      href={`/register?program=${encodeURIComponent(program.value)}`}
+                    >
+                      Apply for this program <ArrowRight size={16} />
+                    </Link>
+                  </article>
+                );
+              })}
             </div>
           </div>
         </section>
-
-        {/* Call to Action Section */}
-        <section className="bg-blue-600 text-white py-16">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-3xl font-extrabold">Ready to Get Started?</h2>
-            <p className="mt-4 text-lg">
-              Take the first step towards a rewarding career. Apply for admission today and join our community of skilled professionals.
-            </p>
-            <div className="mt-8">
-              <Link href={"/register"} className="inline-block bg-white text-blue-600 font-semibold py-3 px-6 rounded-lg shadow-lg hover:bg-gray-200">
-                Apply Now
+        <section className="locations-section">
+          <div className="page-shell">
+            <div className="section-head">
+              <div>
+                <span className="eyebrow">Learn near you</span>
+                <h2>
+                  Choose where you
+                  <br />
+                  <em>want to study.</em>
+                </h2>
+              </div>
+              <p>
+                Training is available across four districts. Church Music Arts
+                is taught exclusively at Karama in Ruhashya Sector.
+              </p>
+            </div>
+            <div className="location-groups">
+              {["Huye", "Gisagara", "Nyamagabe", "Nyanza"].map((district) => (
+                <article key={district}>
+                  <h3>
+                    <MapPin size={18} /> {district} District
+                  </h3>
+                  {TRAINING_LOCATIONS.filter(
+                    (location) => location.district === district,
+                  ).map((location) => (
+                    <div key={location.name}>
+                      <strong>{location.name}</strong>
+                      <span>{location.detail}</span>
+                    </div>
+                  ))}
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+        <section className="steps-section">
+          <div className="page-shell steps-layout">
+            <div className="steps-copy">
+              <span className="eyebrow">Clear from the start</span>
+              <h2>
+                Your application,
+                <br />
+                <em>step by step.</em>
+              </h2>
+              <p>
+                A guided process keeps everything focused. Add your details,
+                provide payment evidence, then review before you submit.
+              </p>
+              <Link href="/register" className="button button-dark">
+                Begin now <ArrowRight size={17} />
               </Link>
             </div>
+            <div className="steps-list">
+              {[
+                [
+                  "01",
+                  "Tell us about you",
+                  "Personal details, education and where you live.",
+                ],
+                [
+                  "02",
+                  "Choose your program",
+                  "Select the training path you want to pursue.",
+                ],
+                [
+                  "03",
+                  "Add payment proof",
+                  "Enter the reference and securely upload your receipt.",
+                ],
+                [
+                  "04",
+                  "Review & submit",
+                  "Check every detail before sending your application.",
+                ],
+              ].map(([num, title, text]) => (
+                <div className="step-row" key={num}>
+                  <span>{num}</span>
+                  <div>
+                    <h3>{title}</h3>
+                    <p>{text}</p>
+                  </div>
+                  <ArrowRight />
+                </div>
+              ))}
+            </div>
           </div>
         </section>
-      </div>
+        <section className="confidence">
+          <div className="page-shell confidence-grid">
+            <div>
+              <ShieldCheck />
+              <h3>Thoughtful admissions</h3>
+              <p>
+                Your payment is never automatically processed or verified. An
+                ETP administrator reviews your submitted information.
+              </p>
+            </div>
+            <div>
+              <Users />
+              <h3>People behind the process</h3>
+              <p>
+                Your application is reviewed by the admissions team—not an
+                anonymous payment algorithm.
+              </p>
+            </div>
+            <div>
+              <Award />
+              <h3>One focused journey</h3>
+              <p>
+                Everything required for your application is organized in one
+                clear, mobile-friendly flow.
+              </p>
+            </div>
+          </div>
+        </section>
+        <section className="final-cta">
+          <div className="page-shell">
+            <span className="eyebrow">Your next chapter</span>
+            <h2>
+              Ready to turn your
+              <br />
+              <em>potential into practice?</em>
+            </h2>
+            <Link href="/register" className="button button-lime">
+              Start your application <ArrowRight size={18} />
+            </Link>
+          </div>
+        </section>
+      </main>
       <Footer />
     </>
   );
