@@ -208,43 +208,38 @@ export default function Register() {
     setUploadProgress(10);
     try {
       const file = data.paymentProof?.[0];
-      if (!file) throw new Error();
-      const asset = await client.assets.upload("file", file, {
-        filename: file.name,
+      if (!file) throw new Error("Payment proof is required");
+
+      const payload = new window.FormData();
+      Object.entries(data).forEach(([key, value]) => {
+        if (key !== "paymentProof" && typeof value === "string") {
+          payload.append(key, value);
+        }
       });
-      setUploadProgress(70);
-      const now = new Date().toISOString();
-      const application = await client.create({
-        _type: "studentAdmission",
-        ...data,
-        paymentProof: {
-          _type: "file",
-          asset: { _type: "reference", _ref: asset._id },
-        },
-        fullName,
-        registrationFee: REGISTRATION_FEE,
-        paymentStatus: "pending",
-        applicationStatus: "submitted",
-        status: "pending",
-        createdAt: now,
-        updatedAt: now,
+      payload.append("paymentProof", file);
+      setUploadProgress(50);
+
+      const response = await fetch("/api/applications", {
+        method: "POST",
+        body: payload,
       });
-      await client.create({
-        _type: "notification",
-        title: "New application received",
-        message: `${fullName} submitted an application with payment proof.`,
-        type: "application",
-        recipient: "admin",
-        application: { _type: "reference", _ref: application._id },
-        isRead: false,
-        createdAt: now,
-        link: "/admin",
-      });
+      const result = (await response.json().catch(() => ({}))) as {
+        error?: string;
+      };
+      if (!response.ok) {
+        throw new Error(result.error || "Application submission failed");
+      }
+
       setUploadProgress(100);
       setComplete(true);
       toast.success("Application submitted successfully.");
-    } catch {
-      toast.error("Your application could not be submitted. Please try again.");
+    } catch (error) {
+      console.error("Application submission failed", error);
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Your application could not be submitted. Please try again.",
+      );
     } finally {
       setSubmitting(false);
     }
