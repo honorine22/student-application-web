@@ -35,3 +35,18 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 # student-application-web
+
+## Deployment configuration
+
+Student applications are stored in Sanity. Configure these environment variables
+in Netlify before deploying:
+
+```text
+NEXT_PUBLIC_SANITY_PROJECT_ID=your-project-id
+NEXT_PUBLIC_SANITY_DATASET=production
+SANITY_API_WRITE_TOKEN=your-server-only-write-token
+```
+
+`SANITY_API_WRITE_TOKEN` must have permission to create documents and upload
+assets in the configured dataset. Keep it server-only: do not use a
+`NEXT_PUBLIC_` prefix and do not commit it to the repository.

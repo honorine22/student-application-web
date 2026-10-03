@@ -225,9 +225,13 @@ export default function Register() {
       });
       const result = (await response.json().catch(() => ({}))) as {
         error?: string;
+        reference?: string;
       };
       if (!response.ok) {
-        throw new Error(result.error || "Application submission failed");
+        throw new Error(
+          result.error ||
+            `Your application could not be submitted (HTTP ${response.status}). Please try again or contact ETP admissions.`,
+        );
       }
 
       setUploadProgress(100);

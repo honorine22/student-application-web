@@ -1,12 +1,22 @@
 import { createClient } from "next-sanity";
 import { NextResponse } from "next/server";
-import { apiVersion, dataset, projectId } from "../../../sanity/env";
 import { REGISTRATION_FEE } from "../../lib/admissions";
 
 export const runtime = "nodejs";
 
 const MAX_PROOF_SIZE = 5 * 1024 * 1024;
 const PROOF_TYPES = new Set(["image/jpeg", "image/png", "application/pdf"]);
+type SubmissionStage = "request" | "configuration" | "upload" | "save";
+
+class SubmissionError extends Error {
+  constructor(
+    message: string,
+    readonly status: number,
+    readonly code: string,
+  ) {
+    super(message);
+  }
+}
 const requiredFields = [
   "firstName",
   "lastName",
@@ -29,16 +39,31 @@ const requiredFields = [
 ] as const;
 
 function getWriteClient() {
-  const token =
-    process.env.SANITY_API_WRITE_TOKEN ||
-    process.env.NEXT_PUBLIC_SANITY_API_WRITE_TOKEN;
+  const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
+  const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET;
+  const token = process.env.SANITY_API_WRITE_TOKEN;
 
-  if (!token) throw new Error("Sanity write token is not configured");
+  if (!projectId || !dataset || !token) {
+    throw new SubmissionError(
+      "Applications are temporarily unavailable because the submission service is not configured. Please contact ETP admissions.",
+      503,
+      "SERVICE_NOT_CONFIGURED",
+    );
+  }
 
-  return createClient({ projectId, dataset, apiVersion, token, useCdn: false });
+  return createClient({
+    projectId,
+    dataset,
+    apiVersion: process.env.NEXT_PUBLIC_SANITY_API_VERSION || "2024-09-07",
+    token,
+    useCdn: false,
+  });
 }
 
 export async function POST(request: Request) {
+  const reference = crypto.randomUUID().slice(0, 8).toUpperCase();
+  let stage: SubmissionStage = "request";
+
   try {
     const form = await request.formData();
     const data = Object.fromEntries(
@@ -71,7 +96,9 @@ export async function POST(request: Request) {
       );
     }
 
+    stage = "configuration";
     const client = getWriteClient();
+    stage = "upload";
     const asset = await client.assets.upload("file", Buffer.from(await proof.arrayBuffer()), {
       filename: proof.name,
       contentType: proof.type,
@@ -80,6 +107,7 @@ export async function POST(request: Request) {
     const fullName = `${data.firstName} ${data.lastName}`;
     const applicationId = `studentAdmission-${crypto.randomUUID()}`;
 
+    stage = "save";
     await client
       .transaction()
       .create({
@@ -113,10 +141,59 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ ok: true }, { status: 201 });
   } catch (error) {
-    console.error("Application submission failed", error);
+    const statusCode =
+      typeof error === "object" && error && "statusCode" in error
+        ? Number(error.statusCode)
+        : undefined;
+    let response =
+      error instanceof SubmissionError
+        ? error
+        : new SubmissionError(
+            "Your application could not be submitted. Please try again. If the problem continues, contact ETP admissions.",
+            500,
+            "SUBMISSION_FAILED",
+          );
+
+    if (statusCode === 401 || statusCode === 403) {
+      response = new SubmissionError(
+        "Applications are temporarily unavailable because the submission service could not be authorized. Please contact ETP admissions.",
+        503,
+        "SERVICE_NOT_AUTHORIZED",
+      );
+    } else if (statusCode === 429) {
+      response = new SubmissionError(
+        "The application service is busy. Please wait a minute and submit again.",
+        503,
+        "SERVICE_BUSY",
+      );
+    } else if (!(error instanceof SubmissionError) && stage === "upload") {
+      response = new SubmissionError(
+        "Your payment proof could not be uploaded. Check your connection and submit again.",
+        502,
+        "UPLOAD_FAILED",
+      );
+    } else if (!(error instanceof SubmissionError) && stage === "save") {
+      response = new SubmissionError(
+        "Your application could not be saved. Please submit again. If the problem continues, contact ETP admissions.",
+        502,
+        "SAVE_FAILED",
+      );
+    }
+
+    console.error("Application submission failed", {
+      reference,
+      stage,
+      statusCode,
+      code: response.code,
+      error,
+    });
     return NextResponse.json(
-      { error: "The application service is temporarily unavailable" },
-      { status: 500 },
+      {
+        error: `${response.message} Reference: ${reference}`,
+        code: response.code,
+        reference,
+      },
+      { status: response.status },
     );
   }
 }
