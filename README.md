@@ -42,8 +42,8 @@ Student applications are stored in Sanity. Configure these environment variables
 in Netlify before deploying:
 
 ```text
-NEXT_PUBLIC_SANITY_PROJECT_ID=your-project-id
-NEXT_PUBLIC_SANITY_DATASET=production
+SANITY_PROJECT_ID=your-project-id
+SANITY_DATASET=production
 SANITY_API_WRITE_TOKEN=your-server-only-write-token
 ```
 

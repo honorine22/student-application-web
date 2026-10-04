@@ -3,18 +3,13 @@ export const apiVersion =
 
 
 export const projectId = assertValue(
-  process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
-  'Missing environment variable: NEXT_PUBLIC_SANITY_PROJECT_ID'
+  process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || process.env.SANITY_PROJECT_ID,
+  'Missing environment variable: NEXT_PUBLIC_SANITY_PROJECT_ID or SANITY_PROJECT_ID'
 )
 
 export const dataset = assertValue(
-  process.env.NEXT_PUBLIC_SANITY_DATASET,
-  'Missing environment variable: NEXT_PUBLIC_SANITY_DATASET'
-)
-
-export const sanity_token = assertValue(
-  process.env.NEXT_PUBLIC_SANITY_API_WRITE_TOKEN,
-  'Missing environment variable: NEXT_PUBLIC_SANITY_API_WRITE_TOKEN'
+  process.env.NEXT_PUBLIC_SANITY_DATASET || process.env.SANITY_DATASET,
+  'Missing environment variable: NEXT_PUBLIC_SANITY_DATASET or SANITY_DATASET'
 )
 
 function assertValue<T>(v: T | undefined, errorMessage: string): T {
