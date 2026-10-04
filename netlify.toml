@@ -1,5 +1,5 @@
 [build]
-  command = "unset NODE_ENV && npm run build"
+  command = "rm -rf .next/cache/turbopack .netlify/.next/cache/turbopack && unset NODE_ENV SITE_MAIL_RECIEVER SMTP_SERVER_HOST SMTP_SERVER_USERNAME SMTP_SERVER_PASSWORD && npm run build"
   publish = ".next"
 
 [build.environment]

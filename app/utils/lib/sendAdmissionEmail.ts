@@ -1,18 +1,5 @@
 'use server';
 import nodemailer from 'nodemailer';
-const SMTP_SERVER_HOST = process.env.SMTP_SERVER_HOST;
-const SMTP_SERVER_USERNAME = process.env.SMTP_SERVER_USERNAME;
-const SMTP_SERVER_PASSWORD = process.env.SMTP_SERVER_PASSWORD;
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  host: SMTP_SERVER_HOST,
-  port: 587,
-  secure: true,
-  auth: {
-    user: SMTP_SERVER_USERNAME,
-    pass: SMTP_SERVER_PASSWORD,
-  },
-});
 
 export async function sendMail({
   sendTo,
@@ -25,21 +12,39 @@ export async function sendMail({
   text: string;
   html?: string;
 }) {
+  const smtpHost = process.env.SMTP_SERVER_HOST;
+  const smtpUsername = process.env.SMTP_SERVER_USERNAME;
+  const smtpPassword = process.env.SMTP_SERVER_PASSWORD;
+
+  if (!smtpHost || !smtpUsername || !smtpPassword) {
+    throw new Error('SMTP_SERVER_HOST, SMTP_SERVER_USERNAME and SMTP_SERVER_PASSWORD must be configured');
+  }
+
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    host: smtpHost,
+    port: 587,
+    secure: true,
+    auth: {
+      user: smtpUsername,
+      pass: smtpPassword,
+    },
+  });
+
   try {
     // const isVerified = 
     await transporter.verify();
-  } catch (error) {
-    console.error('SMTP verification failed', error);
+  } catch {
+    console.error('SMTP verification failed');
     return;
   }
   const info = await transporter.sendMail({
-    from: SMTP_SERVER_USERNAME,
+    from: smtpUsername,
     to: sendTo,
     subject: subject,
     text: text,
     html: html ? html : '',
   });
   console.log('Message Sent', info.messageId);
-  console.log('Mail sent to', sendTo);
   return info;
 }
