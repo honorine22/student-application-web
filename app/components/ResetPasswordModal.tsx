@@ -18,7 +18,7 @@ function ResetPasswordModal({ isOpen, onRequestClose }: { isOpen: boolean, onReq
         try {
             await sendPasswordResetEmail(auth, email);
             setMessage('Password reset email sent! Check your inbox.');
-        } catch (err) {
+        } catch {
             setError('Failed to send reset email. Please try again.');
         }
 
