@@ -4,6 +4,8 @@
 
 [build.environment]
   NODE_VERSION = "22"
-  # NODE_ENV is controlled by Next.js and is not a secret. Some older site
-  # settings may still define it, causing Netlify to flag ordinary build text.
-  SECRETS_SCAN_OMIT_KEYS = "NODE_ENV"
+  # These values are public build configuration, not credentials. The dataset
+  # value (usually "production") and project ID are intentionally embedded in
+  # the Sanity browser client, so Netlify must not treat them as leaked secrets.
+  # SANITY_API_WRITE_TOKEN remains scanned and server-only.
+  SECRETS_SCAN_OMIT_KEYS = "NODE_ENV,SANITY_DATASET,SANITY_PROJECT_ID"
