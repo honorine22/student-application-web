@@ -71,6 +71,15 @@ configuration from the build process. The mail helper reads SMTP credentials
 only when sending mail, not when its module is loaded during a build. Secrets
 scanning remains enabled; no email keys or cache paths are exempted.
 
+`SANITY_API_WRITE_TOKEN` is excluded from secrets scanning through
+`SECRETS_SCAN_OMIT_KEYS` in `netlify.toml` because Turbopack embeds this
+server-only value in its build cache, including caches generated during the
+current build. This key-specific exemption applies across all scanned files,
+not just the cache. Keep the token confined to server-side code and Netlify
+environment configuration; the exemption does not make it safe to expose in
+browser bundles or commit to the repository. All other secret keys remain
+subject to the existing scanning configuration.
+
 After applying these changes, retry deployment with a cleared build cache.
 Rotate any SMTP password that appeared in a repository or build artifact and
 update its value in Netlify before redeploying. Removing a value from current
