@@ -18,6 +18,7 @@ import { rwandaLocation } from "@devrw/rwanda-location";
 import { client } from "../../sanity/lib/client";
 import Navbar from "../components/Navbar";
 import {
+  CHURCH_MUSIC_ARTS_BRANCHES,
   formatRwf,
   PAYMENT_INSTRUCTIONS,
   PAYMENT_METHODS,
@@ -40,6 +41,7 @@ type FormData = {
   cell: string;
   village: string;
   tradeToLearn: string;
+  musicArtsBranch: string;
   trainingLocation: string;
   emergencyContactName: string;
   emergencyContactRelationship: string;
@@ -92,7 +94,7 @@ const fields: (keyof FormData)[][] = [
   ],
   ["education"],
   ["province", "district", "sector", "cell", "village"],
-  ["tradeToLearn", "trainingLocation"],
+  ["tradeToLearn", "musicArtsBranch", "trainingLocation"],
   ["paymentMethod", "paymentReference", "paymentProof"],
   [],
 ];
@@ -133,7 +135,7 @@ export default function Register() {
   );
   const restrictedLocation =
     selectedProgram?.restrictedLocation ||
-    (values.tradeToLearn === "Church Music Arts" ? "Karama" : "");
+    (values.tradeToLearn === "Church Music Arts" ? "Huye City" : "");
   const locations = restrictedLocation
     ? TRAINING_LOCATIONS.filter(
         (x) =>
@@ -174,10 +176,14 @@ export default function Register() {
               value: override?.title || program.value,
               label: override?.title || program.label,
               restrictedLocation:
-                override?.restrictedLocation ||
-                ("restrictedLocation" in program
-                  ? program.restrictedLocation
-                  : undefined),
+                program.value === "Church Music Arts"
+                  ? "restrictedLocation" in program
+                    ? program.restrictedLocation
+                    : undefined
+                  : override?.restrictedLocation ||
+                    ("restrictedLocation" in program
+                      ? program.restrictedLocation
+                      : undefined),
             };
           });
           const additions = items
@@ -567,6 +573,9 @@ export default function Register() {
                             (e.target.value === "Church Music Arts"
                               ? trainingLocationValue(TRAINING_LOCATIONS[0])
                               : "");
+                          if (e.target.value !== "Church Music Arts") {
+                            setValue("musicArtsBranch", "");
+                          }
                           setValue("trainingLocation", restriction);
                         },
                       })}
@@ -582,6 +591,31 @@ export default function Register() {
                       <small>{errors.tradeToLearn.message}</small>
                     )}
                   </label>
+                  {values.tradeToLearn === "Church Music Arts" && (
+                    <label className="field span-2">
+                      <span>
+                        Church Music Arts branch <b>*</b>
+                      </span>
+                      <select
+                        {...register("musicArtsBranch", {
+                          required:
+                            values.tradeToLearn === "Church Music Arts"
+                              ? "Church Music Arts branch is required"
+                              : false,
+                        })}
+                      >
+                        <option value="">Choose a specific branch</option>
+                        {CHURCH_MUSIC_ARTS_BRANCHES.map((branch) => (
+                          <option value={branch} key={branch}>
+                            {branch}
+                          </option>
+                        ))}
+                      </select>
+                      {errors.musicArtsBranch && (
+                        <small>{errors.musicArtsBranch.message}</small>
+                      )}
+                    </label>
+                  )}
                   <label className="field span-2">
                     <span>
                       Preferred study location <b>*</b>
@@ -705,6 +739,9 @@ export default function Register() {
                         .join(", "),
                     ],
                     ["Program", values.tradeToLearn],
+                    ...(values.tradeToLearn === "Church Music Arts"
+                      ? [["Music Arts branch", values.musicArtsBranch]]
+                      : []),
                     ["Study location", values.trainingLocation],
                     [
                       "Payment",

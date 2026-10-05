@@ -17,7 +17,7 @@ export const PROGRAMS = [
     value: "Church Music Arts",
     label: "Church Music Arts",
     icon: "music",
-    restrictedLocation: "Karama",
+    restrictedLocation: "Huye City",
   },
   {
     value: "Videography",
@@ -58,6 +58,7 @@ export const PAYMENT_METHODS = [
 ] as const;
 
 export const TRAINING_LOCATIONS = [
+  { district: "Huye", name: "Huye City", detail: "Ngoma Sector" },
   { district: "Huye", name: "Karama", detail: "Ruhashya Sector" },
   { district: "Huye", name: "Matyazo", detail: "Ngoma Sector" },
   { district: "Huye", name: "Cyegera", detail: "Kinazi Sector · ADEPR" },
@@ -79,6 +80,17 @@ export const TRAINING_LOCATIONS = [
   { district: "Gisagara", name: "Kansi", detail: "Catholic Church" },
   { district: "Nyamagabe", name: "Kagano", detail: "EAR · Uwinkingi Sector" },
   { district: "Nyanza", name: "Gisayura", detail: "EAR · Ntyazo Sector" },
+] as const;
+
+export const CHURCH_MUSIC_ARTS_BRANCHES = [
+  "Play Electric, Bass and Acoustic Guitar",
+  "Play Drums and Percussion",
+  "Play Brass and Woodwinds",
+  "Play Traditional Instruments (Gucuranga bya gakondo)",
+  "Music Production",
+  "Play Keyboards (Synthesizer)",
+  "Apply Singing Techniques (Kwiga kuririmba)",
+  "Operate Live Sound and Stage Lighting",
 ] as const;
 
 export const trainingLocationValue = (
