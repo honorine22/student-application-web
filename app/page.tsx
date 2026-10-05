@@ -160,7 +160,7 @@ export default function Home() {
               </div>
               <p>
                 Training is available across four districts. Church Music Arts
-                is taught exclusively at Karama in Ruhashya Sector.
+                is taught exclusively in Huye City, Ngoma Sector.
               </p>
             </div>
             <div className="location-groups">

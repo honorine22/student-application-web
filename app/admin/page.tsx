@@ -40,6 +40,7 @@ type Student = {
   cell?: string;
   village?: string;
   tradeToLearn?: string;
+  musicArtsBranch?: string;
   trainingLocation?: string;
   emergencyContactName?: string;
   emergencyContactRelationship?: string;
@@ -199,6 +200,7 @@ export default function Admin() {
         nationalIDNumber: editing.nationalIDNumber,
         education: editing.education,
         tradeToLearn: editing.tradeToLearn,
+        musicArtsBranch: editing.musicArtsBranch,
         trainingLocation: editing.trainingLocation,
         emergencyContactName: editing.emergencyContactName,
         emergencyContactRelationship: editing.emergencyContactRelationship,
@@ -568,6 +570,7 @@ export default function Admin() {
                   .join(", "),
               ],
               ["Study location", viewing.trainingLocation],
+              ["Church Music Arts branch", viewing.musicArtsBranch],
               [
                 "Emergency contact",
                 [
@@ -636,6 +639,7 @@ export default function Admin() {
               ["nationalIDNumber", "National ID"],
               ["education", "Education"],
               ["trainingLocation", "Study location"],
+              ["musicArtsBranch", "Church Music Arts branch"],
               ["emergencyContactName", "Emergency contact name"],
               ["emergencyContactPhone", "Emergency contact phone"],
             ].map(([key, label]) => (
