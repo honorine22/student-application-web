@@ -13,7 +13,12 @@
 .env.local
 # next.js
 /.next/
+/.netlify/
 /out/
+
+# local document exports
+/document.json
+/sanity/document.json
 
 # production
 /build
