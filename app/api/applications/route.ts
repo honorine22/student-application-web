@@ -30,6 +30,7 @@ const requiredFields = [
   "cell",
   "village",
   "tradeToLearn",
+  "musicArtsBranch",
   "trainingLocation",
   "emergencyContactName",
   "emergencyContactRelationship",
@@ -71,7 +72,11 @@ export async function POST(request: Request) {
     const data = Object.fromEntries(
       requiredFields.map((field) => [field, String(form.get(field) || "").trim()]),
     ) as Record<(typeof requiredFields)[number], string>;
-    const missing = requiredFields.find((field) => !data[field]);
+    const missing = requiredFields.find(
+      (field) =>
+        !data[field] &&
+        !(field === "musicArtsBranch" && data.tradeToLearn !== "Church Music Arts"),
+    );
 
     if (missing) {
       return NextResponse.json(

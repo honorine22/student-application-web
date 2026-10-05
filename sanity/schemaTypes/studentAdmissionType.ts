@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity";
+import { CHURCH_MUSIC_ARTS_BRANCHES } from "../../app/lib/admissions";
 
 const programs = [
   "Tailoring",
@@ -97,8 +98,26 @@ export const studentAdmissionType = defineType({
       name: "trainingLocation",
       title: "Preferred Study Location",
       type: "string",
-      description: "Church Music Arts is available only at Karama.",
+      description: "Church Music Arts is available only in Huye City, Ngoma Sector.",
       validation: (R) => R.required(),
+    }),
+    defineField({
+      name: "musicArtsBranch",
+      title: "Church Music Arts Branch",
+      type: "string",
+      options: {
+        list: CHURCH_MUSIC_ARTS_BRANCHES.map((branch) => ({
+          title: branch,
+          value: branch,
+        })),
+      },
+      hidden: ({ document }) => document?.tradeToLearn !== "Church Music Arts",
+      validation: (R) =>
+        R.custom((value, context) =>
+          context.document?.tradeToLearn === "Church Music Arts" && !value
+            ? "A Church Music Arts branch is required"
+            : true,
+        ),
     }),
     defineField({
       name: "emergencyContactName",
