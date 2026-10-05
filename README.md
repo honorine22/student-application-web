@@ -50,3 +50,22 @@ SANITY_API_WRITE_TOKEN=your-server-only-write-token
 `SANITY_API_WRITE_TOKEN` must have permission to create documents and upload
 assets in the configured dataset. Keep it server-only: do not use a
 `NEXT_PUBLIC_` prefix and do not commit it to the repository.
+
+## Secret scanning and email configuration
+
+Set `SITE_MAIL_RECIEVER` and `SMTP_SERVER_PASSWORD` in the Netlify dashboard,
+not in source files or exported documents. The document update script reads
+`SITE_MAIL_RECIEVER` from its environment and stops if it is missing. JSON
+exports do not evaluate `process.env`; the checked-in document has no recipient
+email, and local document exports are ignored to prevent accidental additions.
+Already tracked exports still require review before committing changes.
+
+Netlify secret scanning remains enabled for source files and deployable output.
+Only the internal `.netlify/.next/cache/**` build cache is excluded by path.
+The key exclusions cover public Sanity configuration and the scanner's own
+`SECRETS_SCAN_OMIT_KEYS` setting, which would otherwise match its literal
+configuration value. SMTP credentials and the recipient email remain scanned.
+
+Before redeploying, rotate the exposed SMTP password, update it in Netlify,
+and clear the deploy build cache. Removing a value from the current files does
+not remove it from repository history or previous build caches.

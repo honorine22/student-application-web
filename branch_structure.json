@@ -1,0 +1,27 @@
+{
+  "default_branch": "main",
+  "branches": [
+    "agent-environment-variables-2a20",
+    "agent-environment-variables-ee3d",
+    "agent-in-turbopack-cache-16ae",
+    "agent-secrets-from-source-files-eed4",
+    "main",
+    "origin"
+  ],
+  "parent": {
+    "agent-environment-variables-2a20": "main",
+    "agent-environment-variables-ee3d": "main",
+    "agent-in-turbopack-cache-16ae": "main",
+    "agent-secrets-from-source-files-eed4": "main",
+    "main": null,
+    "origin": "main"
+  },
+  "order": [
+    "main",
+    "agent-environment-variables-2a20",
+    "agent-environment-variables-ee3d",
+    "agent-in-turbopack-cache-16ae",
+    "agent-secrets-from-source-files-eed4",
+    "origin"
+  ]
+}
