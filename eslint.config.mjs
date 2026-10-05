@@ -6,4 +6,4 @@ export default defineConfig([
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
   globalIgnores(['.next/**', '.sanity/**', 'out/**', 'build/**', 'next-env.d.ts']),
-])
+]);
