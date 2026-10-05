@@ -13,6 +13,7 @@
 .env.local
 # next.js
 /.next/
+/.netlify/
 /out/
 
 # production

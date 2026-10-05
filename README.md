@@ -50,3 +50,25 @@ SANITY_API_WRITE_TOKEN=your-server-only-write-token
 `SANITY_API_WRITE_TOKEN` must have permission to create documents and upload
 assets in the configured dataset. Keep it server-only: do not use a
 `NEXT_PUBLIC_` prefix and do not commit it to the repository.
+
+### Secrets scanning
+
+Netlify secrets scanning stays enabled. The omission list in `netlify.toml`
+contains environment variable names, not credentials: the public Sanity project
+ID and dataset, plus `SECRETS_SCAN_OMIT_KEYS` itself so the non-secret scanner
+configuration is not flagged when its value is also set in Netlify.
+`SANITY_API_WRITE_TOKEN` and `SITE_MAIL_RECIEVER` remain scanned.
+
+Only `.netlify/.next/cache/**` is excluded from scanning because the generated
+Turbopack cache can contain server-side build environment values. Source files,
+browser bundles, and deployed server functions are still scanned. The entire
+`.netlify/` directory is ignored by Git.
+
+The `document.json` sample omits the email field. When running
+`updateDocument.ts`, set `SITE_MAIL_RECIEVER` in the script's environment; JSON
+files do not evaluate environment variable references. The script stops before
+updating a document if that variable is missing.
+
+If a write token was previously committed or exposed in a deployed asset,
+rotate it in Sanity and update the Netlify environment variable before
+redeploying. Do not disable secrets scanning to resolve a deployment failure.
