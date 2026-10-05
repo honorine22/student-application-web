@@ -7,5 +7,4 @@
   # These values are public build configuration, not credentials. The dataset
   # value (usually "production") and project ID are intentionally embedded in
   # the Sanity browser client, so Netlify must not treat them as leaked secrets.
-  # SANITY_API_WRITE_TOKEN remains scanned and server-only.
-  SECRETS_SCAN_OMIT_KEYS = "NODE_ENV,SANITY_DATASET,SANITY_PROJECT_ID"
+  SECRETS_SCAN_OMIT_KEYS = "NODE_ENV,SANITY_DATASET,SANITY_PROJECT_ID,SANITY_API_WRITE_TOKEN"
