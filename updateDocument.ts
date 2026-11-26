@@ -8,7 +8,7 @@ const updatedDocument = {
   _type: 'studentAdmission', // Replace with your document type
   // Add your fields here
   status: 'approved', // Example field
-  email: 'igiranezah8@gmail.com' // Example field
+  email: 'user@example.com' // Example field
 };
 
 // Update the document

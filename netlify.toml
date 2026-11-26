@@ -8,4 +8,8 @@
   # value (usually "production") and project ID are intentionally embedded in
   # the Sanity browser client, so Netlify must not treat them as leaked secrets.
   # SANITY_API_WRITE_TOKEN remains scanned and server-only.
-  SECRETS_SCAN_OMIT_KEYS = "NODE_ENV,SANITY_DATASET,SANITY_PROJECT_ID"
+  SECRETS_SCAN_OMIT_KEYS = "NODE_ENV,SANITY_DATASET,SANITY_PROJECT_ID,SECRETS_SCAN_OMIT_KEYS,SECRETS_SCAN_OMIT_PATHS"
+  # Next.js inlines server env vars (e.g. SMTP credentials) into the Turbopack
+  # cache under .next/cache. That cache is build output, not published code,
+  # so exclude it from secret scanning.
+  SECRETS_SCAN_OMIT_PATHS = ".next/cache,.netlify"
