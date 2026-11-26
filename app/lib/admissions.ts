@@ -1,4 +1,4 @@
-export const REGISTRATION_FEE = 5000;
+export const REGISTRATION_FEE = 3000;
 
 export const PROGRAMS = [
   { value: "Tailoring", label: "Tailoring / Ubudozi", icon: "needle" },
